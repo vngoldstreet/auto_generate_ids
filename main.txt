@@ -1,0 +1,54 @@
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+//	func init() {
+//		repository.ConnectToRedis()
+//	}
+const (
+	length      = 1000
+	lengthPrint = 100
+)
+
+func generateIDs(prefix string, length int, chars []rune, result *[]string, limit *int) {
+	if *limit <= 0 {
+		return
+	}
+
+	if length == 0 {
+		*result = append(*result, prefix)
+		*limit--
+		return
+	}
+
+	for _, char := range chars {
+		if *limit <= 0 {
+			break
+		}
+		generateIDs(prefix+string(char), length-1, chars, result, limit)
+	}
+}
+
+func generateIDByLength() []string {
+	chars := []rune("ABCDEF0123456789")
+	var result []string
+	limit := length
+
+	generateIDs("", 8, chars, &result, &limit)
+
+	return result
+}
+
+func main() {
+	ids := generateIDByLength()
+	for i := 0; i < len(ids); i += lengthPrint {
+		end := i + lengthPrint
+		if end > len(ids) {
+			end = len(ids)
+		}
+		fmt.Println(strings.Join(ids[i:end], ","))
+	}
+}

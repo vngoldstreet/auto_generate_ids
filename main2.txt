@@ -1,0 +1,35 @@
+package main
+
+import (
+	"fmt"
+)
+
+func generateCombinations(prefix string, length int, chars []string, results *[]string) {
+	if len(prefix) == length {
+		*results = append(*results, prefix)
+		return
+	}
+
+	for _, char := range chars {
+		generateCombinations(prefix+char, length, chars, results)
+	}
+}
+
+func generateFirst10Combinations() []string {
+	var letters = []string{"A", "B", "C", "D", "E", "F"}
+	var digits = []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+	var first10Combinations []string
+
+	// Generate combinations of length 8
+	generateCombinations("", 8, append(letters, digits...), &first10Combinations)
+
+	// Return only the first 10 combinations
+	return first10Combinations[:10]
+}
+
+func main() {
+	first10Combinations := generateFirst10Combinations()
+	for _, combination := range first10Combinations {
+		fmt.Println(combination)
+	}
+}

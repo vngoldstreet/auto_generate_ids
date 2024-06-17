@@ -1,0 +1,46 @@
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+const (
+	characters = "ABCDEF0123456789"
+	length     = 8
+	filename   = "combinations.txt"
+)
+
+func main() {
+	file, err := os.Create(filename)
+	if err != nil {
+		fmt.Println("Error creating file:", err)
+		return
+	}
+	defer file.Close()
+
+	totalCombinations := int64(1)
+	for i := 0; i < length; i++ {
+		totalCombinations *= int64(len(characters))
+	}
+
+	fmt.Printf("Total combinations: %d\n", totalCombinations)
+
+	for i := int64(0); i < totalCombinations; i++ {
+		combination := generateCombination(i, len(characters), length)
+		_, err := file.WriteString(combination + "\n")
+		if err != nil {
+			fmt.Println("Error writing to file:", err)
+			return
+		}
+	}
+}
+
+func generateCombination(n int64, base, length int) string {
+	result := make([]byte, length)
+	for i := length - 1; i >= 0; i-- {
+		result[i] = characters[n%int64(base)]
+		n /= int64(base)
+	}
+	return string(result)
+}
