@@ -8,7 +8,7 @@ const (
 	characters = "ABCDEF0123456789"
 	idLength   = 8
 	totalIDs   = 4294967296 // 16^8
-	batchSize  = 4000
+	batchSize  = 40000
 )
 
 func generateBatchIDs(startIndex int, chars []rune, length int, batchSize int) []string {
